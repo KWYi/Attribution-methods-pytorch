@@ -6,10 +6,10 @@ from PIL import Image
 from Visual_explanations import GradCam, GradCamplusplus, Guided_BackPropagation, Guided_GradCam
 
 model = torchvision.models.resnet152(pretrained=True)
-model = torchvision.models.densenet161(pretrained=True)
+# model = torchvision.models.densenet161(pretrained=True)
 model.eval()
 
-original_img = Image.open('Data_samples\\14_indigobird_and_448_birdhouse.jpg')
+original_img = Image.open('Data_samples\\243_bullmastiff_and_282_tigercat.jpg')
 original_w, original_h = original_img.size[0], original_img.size[1]
 
 Image_trans = CustomImage()
@@ -31,7 +31,7 @@ sys.exit()
 ######################
 
 target_layers = 'layer4.2.conv3'  # The last convolution layer of the model.
-target_layers = 'features.norm5'
+# target_layers = 'features.norm5'  # The last convolution layer of the model.
 GC_grads = GC.get_gradient(input_TensorImage=Input_img, target_layers=target_layers, target_label=target_label_index)
 GC_vis = GC.visualize(GC_grads, original_img, view=True, save_locations='GradCam.png')
 
@@ -61,13 +61,12 @@ layer1 = 'layer1.0.conv1'
 layer2 = 'layer2.2.conv3'
 layer3 = 'layer3.2.conv3'
 layer4 = 'layer4.2.conv3'
-target_layers = [layer1, layer2, layer3, layer4]
-file_names = ['layer1.png', 'layer2.png', 'layer3.png', 'layer4.png']
 
-layer1 = 'features.transition1.norm'
-layer2 = 'features.transition2.norm'
-layer3 = 'features.transition3.norm'
-layer4 = 'features.norm5'
+# layer1 = 'features.transition1.norm'
+# layer2 = 'features.transition2.norm'
+# layer3 = 'features.transition3.norm'
+# layer4 = 'features.norm5'
+
 target_layers = [layer1, layer2, layer3, layer4]
 file_names = ['layer1.png', 'layer2.png', 'layer3.png', 'layer4.png']
 
