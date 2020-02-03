@@ -10,6 +10,7 @@ model = torchvision.models.resnet152(pretrained=True)
 model.eval()
 
 original_img = Image.open('Data_samples\\243_bullmastiff_and_282_tigercat.jpg')
+original_img = original_img.convert('RGB')
 original_w, original_h = original_img.size[0], original_img.size[1]
 
 Image_trans = CustomImage()
@@ -62,6 +63,7 @@ layer2 = 'layer2.2.conv3'
 layer3 = 'layer3.2.conv3'
 layer4 = 'layer4.2.conv3'
 
+# layers for densenet161
 # layer1 = 'features.transition1.norm'
 # layer2 = 'features.transition2.norm'
 # layer3 = 'features.transition3.norm'
