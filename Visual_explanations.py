@@ -213,6 +213,7 @@ class GradCam(_Base):
         def process():
             grads = self.backward_out[name]
             if counter:
+                grads = torch.clamp(grads, max=0.)
                 grads *= -1.
             weight = torch._adaptive_avg_pool2d(grads, 1)
             gradient = self.forward_out[name] * weight
