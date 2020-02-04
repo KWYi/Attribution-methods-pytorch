@@ -16,7 +16,7 @@ class _Base:
     def normalization(self, x):
         x -= x.min()
         if x.max() <=0.:
-            x /= (x.max()+1e-6)  # to evade Nan
+            x /= 1.  # to avoid Nan
         else:
             x /= x.max()
         return x
