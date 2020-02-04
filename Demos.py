@@ -31,8 +31,8 @@ print(torch.argmax(GC.get_model_output(Input_img)))
 sys.exit()
 ######################
 
-target_layers = 'layer4.2.conv3'  # The last convolution layer of the model.
-# target_layers = 'features.norm5'  # The last convolution layer of the model.
+target_layers = 'layer4.2.conv3'  # The last convolution layer of the ResNet152.
+# target_layers = 'features.norm5'  # The last convolution layer of the DenseNet161.
 GC_grads = GC.get_gradient(input_TensorImage=Input_img, target_layers=target_layers, target_label=target_label_index)
 GC_vis = GC.visualize(GC_grads, original_img, view=True, save_locations='GradCam.png')
 
@@ -63,7 +63,7 @@ layer2 = 'layer2.2.conv3'
 layer3 = 'layer3.2.conv3'
 layer4 = 'layer4.2.conv3'
 
-# layers for densenet161
+# layers for Densenet161
 # layer1 = 'features.transition1.norm'
 # layer2 = 'features.transition2.norm'
 # layer3 = 'features.transition3.norm'
@@ -75,3 +75,23 @@ file_names = ['layer1.png', 'layer2.png', 'layer3.png', 'layer4.png']
 GC = GradCam(model)
 GC_grads = GC.get_gradient(input_TensorImage=Input_img, target_layers=target_layers, target_label=target_label_index)
 GC_vis = GC.visualize(GC_grads, original_img, view=True, save_locations=file_names)
+
+
+########## Demo 3. ##########
+### Generating counterfactual explanations images of GradCam.
+### And additionally, by applying counterfactual explanations algorithm on the Gradcam++, generating counterfactual explanations images of GradCam++.
+### Results are unstable and heavily dependent on the model and data.
+### Compare results by models (Resnet152 and Densenet161) and data (243_bullmastiff_and_282_tigercat.jpg and 243_bullmastiff_and_282_tigercat_low_quality.png).
+
+target_layers = 'layer4.2.conv3'  # The last convolution layer of the ResNetl52.
+# target_layers = 'features.norm5'  # The last convolution layer of the DenseNet161.
+
+# 1. Gradcam
+GC = GradCam(model)
+GC_grads = GC.get_gradient(input_TensorImage=Input_img, target_layers=target_layers, counter=True, target_label=target_label_index)
+GC_vis = GC.visualize(GC_grads, original_img, view=True, save_locations='Counter_GradCam.png')
+
+# 2. Gradcam++
+GCplpl = GradCamplusplus(model)
+GCplpl_grads = GCplpl.get_gradient(input_TensorImage=Input_img, target_layers=target_layers, counter=True, target_label=target_label_index)
+GCplpl_vis = GCplpl.visualize(GCplpl_grads, original_img, view=True, save_locations='Counter_GradCamplusplus.png')
