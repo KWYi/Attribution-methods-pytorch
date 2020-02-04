@@ -7,53 +7,6 @@ import PIL
 from PIL import Image
 from collections.abc import Iterable
 
-def Nancheck(x):
-    if (x != x).any():
-        print('NaN')
-    else:
-        print("No NaN")
-
-
-"""
-Usage example:
-
-from PIL import Image
-from Visual_explanations import Gradcam , Gradcamplusplus, Guided_BackPropagation, Guided_gradcam
-
-Original_image = Image.open('.....') # [h,w,c]
-Tensor_image = transformed image form Original_image # [b,c,h,w]
-
-example_Model = model what you trained
-
-########## Finding target layer's name in the model ##########
-finding = Gradcam(example_model)  # or finding = Gradcamplusplus(model) or finding = Guided_BackPropagation(example_model)
-finding.get_names()
-
-
-########## Gradcam // Gradcam++ ##########
-
-GC = Gradcam(example_model)  # or GC = Gradcamplusplus(model)
-target_layer = ['layer3.2.conv3', 'layer4.2.conv3']
-GC_grad = GC.get_gradient(input_TensorImage=Tensor_image, target_layers=target_layer, target_label=1, input_hook=False)
-GC.visualize(GC_grad, original_input_image=original_img, view=True, save_locations=['block3_GC.png', 'block4_GC.png'])
-
-
-########## Guided Back propagation ##########
-
-GBP = Guided_BackPropagation(example_model)
-output = GBP.get_model_output(Input)
-GBP_grad = GBP.get_gradient(input_TensorImage=Input, target_label=14)
-GBP.visualize(GBP_grad, resize=[original_h, original_w], view=True, save_location='GBP.png')
-
-
-########## Guided Back propagation ##########
-
-GGC = Guided_gradcam()
-GGC.visualize(GBP_grad=GBP_grad, GC_grads=GC_grads, view=True, resize=[original_h, original_w], save_locations=['block3_GGC.png', 'block4_GGC.png'])
-
-
-"""
-
 class _Base:
     def __init__(self, model):
         super(_Base, self).__init__()
