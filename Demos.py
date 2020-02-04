@@ -78,8 +78,8 @@ GC_vis = GC.visualize(GC_grads, original_img, view=True, save_locations=file_nam
 
 
 ########## Demo 3. ##########
-### Generating counterfactual explanations images of GradCam.
-### And additionally, by applying counterfactual explanations algorithm on the Gradcam++, generating counterfactual explanations images of GradCam++.
+### Generating counterfactual explanation images of GradCam.
+### And additionally, apply counterfactual explanations algorithm to the Gradcam++ and generate it.
 ### Results are unstable and heavily dependent on the model and data.
 ### Compare results by models (Resnet152 and Densenet161) and data (243_bullmastiff_and_282_tigercat.jpg and 243_bullmastiff_and_282_tigercat_low_quality.png).
 
