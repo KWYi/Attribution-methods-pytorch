@@ -1,4 +1,5 @@
 import sys
+import torch
 import torchvision
 from PIL import Image
 from Transformer import CustomImage
