@@ -25,7 +25,7 @@ target_label_index = 243  # bull mastiff
 # # 1. Gradcam
 GC = GradCam(model)
 ####################
-#### Recommend to run bellow three lines before execute Gradcam to find target layer's name and model's prediction.
+#### Recommend to run below three lines before execute Gradcam to find target layer's name and model's prediction.
 GC.get_names()
 print("Model's prediction: ", torch.argmax(GC.get_model_output(Input_img)))
 sys.exit()
