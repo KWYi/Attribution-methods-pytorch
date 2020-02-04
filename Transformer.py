@@ -15,4 +15,5 @@ class CustomImage(Dataset):
                                                 # std=[0.5, 0.5, 0.5]
                                             )])
     def __call__(self, Input_img):
+        Input_img = Input_img.convert('RGB')
         return self.transform(Input_img)
