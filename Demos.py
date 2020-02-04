@@ -8,7 +8,7 @@ model = torchvision.models.resnet152(pretrained=True)
 # model = torchvision.models.densenet161(pretrained=True)
 model.eval()
 
-Image_path = 'Data_samples\\dog_cat_2.png'
+Image_path = 'Data_samples\\243_bullmastiff_and_282_tigercat.png'
 original_img = Image.open(Image_path)
 original_w, original_h = original_img.size[0], original_img.size[1]
 
