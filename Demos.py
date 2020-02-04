@@ -1,22 +1,22 @@
 import sys
 import torchvision
-import torch
-from Transformer import CustomImage
 from PIL import Image
+from Transformer import CustomImage
 from Visual_explanations import GradCam, GradCamplusplus, Guided_BackPropagation, Guided_GradCam
 
 model = torchvision.models.resnet152(pretrained=True)
 # model = torchvision.models.densenet161(pretrained=True)
 model.eval()
 
-original_img = Image.open('Data_samples\\243_bullmastiff_and_282_tigercat.jpg')
+Image_path = 'Data_samples\\dog_cat_2.png'
+original_img = Image.open(Image_path)
 original_w, original_h = original_img.size[0], original_img.size[1]
 
 Image_trans = CustomImage()
-Input_img = Image_trans(original_img)
+Input_img = Image_trans(Image_path)
 Input_img = Input_img.unsqueeze(dim=0)
 
-target_label_index = 14
+target_label_index = 243  # bull mastiff
 
 ########## Demo 1. ##########
 # Generating visual explanation images from GradCam, Gradcam++, Guided back propagation, Guided GradCam and Guided Gradcam++.
