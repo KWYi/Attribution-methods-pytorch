@@ -28,7 +28,7 @@ GC = GradCam(model)
 #### Recommend to run below three lines before execute Gradcam to find target layer's name and model's prediction.
 GC.get_names()
 print("Model's prediction: ", torch.argmax(GC.get_model_output(Input_img)))
-sys.exit()
+sys.exit("Find the target layers and their name. For general GradCam and GradCam ++ results, target the last convolution layer.")
 ######################
 
 target_layers = 'layer4.2.conv3'  # The last convolution layer of the ResNet152.
