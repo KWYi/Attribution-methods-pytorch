@@ -109,12 +109,13 @@ class _Base:
         for handle in self.handlers:
             handle.remove()
 
-    def visualize(self, gradients, original_input_image=None, view=True, save_locations=None):
+    def visualize(self, gradients, original_input_image=None, view=True, size=[6.4, 4.8], save_locations=None):
         """
         Visualize gradient maps
 
         :param original_input_image (PIL): Original input image.
         :param view (bool): If True, will show a result. Default: True
+        :param size (list): Define size of window of image viewer. Default: [6.4, 4.8] (Default option of matplotlib)
         :param save_loacations (string, list, optional): Path of save locations and file names. Default: None
         :return (list): A list concluding gradient maps of target layers.
         """
@@ -134,8 +135,9 @@ class _Base:
         for idx, gradient in enumerate(gradients):
             interpolated_gradmap = F.interpolate(gradient, (height, width), mode='bilinear', align_corners=False)
             interpolated_gradmap = interpolated_gradmap[0][0]
+            interpolated_gradmap = interpolated_gradmap.cpu()
             gradmaps.append(interpolated_gradmap)
-
+            plt.figure(figsize=(size[0], size[1]))
             if view:
                 plt.imshow(original_input_image)
                 plt.imshow(interpolated_gradmap, cmap='jet', alpha=0.5)
