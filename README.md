@@ -7,7 +7,7 @@ Examples (1)- Gradcam results
 
 <table>
   <tr>
-    <td> Image </td> <td> Containership label </td> <td> Steel arch bridge label </td>
+    <td> Image </td> <td> Container ship label </td> <td> Steel arch bridge label </td>
   </tr>
   
   <tr>
