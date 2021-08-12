@@ -13,8 +13,6 @@ Examples (1)- Gradcam results
   <tr>
     <td> <img src="https://user-images.githubusercontent.com/48608835/129146959-64ad187a-5bd6-430f-953d-9ca85f7a819d.jpg" width=360px></td>
     <td> <img src="https://user-images.githubusercontent.com/48608835/129150001-fe0a36a9-9be9-4e05-b9f0-fc750c4582b0.png" width=360px></td>
-    <td> <img src="https://user-images.githubusercontent.com/48608835/129145468-9b5b1ee5-86a2-43c6-882c-c1a544f6a4d4.png" width=360px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129150049-ddc9047f-d9c4-489b-b900-d7cabaa93d94.png" width=360px></td>
   </tr>
 </table>
-
-![bbb](https://user-images.githubusercontent.com/48608835/129150001-fe0a36a9-9be9-4e05-b9f0-fc750c4582b0.png)
