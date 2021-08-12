@@ -1,0 +1,292 @@
+import numpy as np
+import torch
+import torch.nn.functional as F
+import torch.optim as optim
+import math
+from math import ceil as ceil
+from math import floor as floor
+from tqdm import trange
+
+EPSILON_DOUBLE = torch.tensor(2.220446049250313e-16, dtype=torch.float64)
+EPSILON_SINGLE = torch.tensor(1.19209290E-07, dtype=torch.float32)
+SQRT_TWO_DOUBLE = torch.tensor(math.sqrt(2), dtype=torch.float32)
+SQRT_TWO_SINGLE = SQRT_TWO_DOUBLE.to(torch.float32)
+
+class Perturbation:
+    def __init__(self, input, pyramid_levels=8, max_blur=20, type="blur"):
+        """ Make perturbed images by pyramid_levels and max blur in advance , and save them in self.pyramid.
+        In index = 0: Max perturbed image // In index = -1: No perturbed image """
+        super(Perturbation, self).__init__()
+        self.pyramid_levels = pyramid_levels
+        self.pyramid = []
+        assert pyramid_levels >= 2
+        assert max_blur > 0
+
+        with torch.no_grad():
+            for sigma in torch.linspace(0, 1, self.pyramid_levels):
+                if type == "blur":
+                    y = Gaussian_blur(input, sigma=(1-sigma)*max_blur)
+
+                elif type == "fade":
+                    y = input * sigma
+                else:
+                    assert False
+                self.pyramid.append(y)
+            self.pyramid = torch.cat(self.pyramid, dim=0)
+
+    def apply(self, mask):
+        """ Pick pixels that saved in self.pyramid.
+        The pixel located in same Y, X resenting position information and certain index 0 meaning pyramid level.
+        Pyramid level is defined by a value of mask.
+        """
+        num_areas = mask.shape[0]
+        w = mask.reshape(num_areas, 1, *mask.shape[1:])
+        w = w * (self.pyramid_levels - 1)
+        k = w.floor()
+        w = w - k
+        k = k.long()
+
+        y = self.pyramid[None, :]
+        y = y.expand(num_areas, *y.shape[1:])
+        k = k.expand(num_areas, 1, *y.shape[2:])
+        y0 = torch.gather(y, 1, k)
+        y1 = torch.gather(y, 1, torch.clamp(k + 1, max=self.pyramid_levels - 1))
+
+        return ((1 - w) * y0 + w * y1).squeeze(dim=1)
+
+    def to(self, dev):
+        self.pyramid.to(device=dev)
+        return self
+
+
+def Gaussian_blur(tensor, sigma):
+    assert sigma >= 0
+    width = ceil(4 * sigma)
+    filt = (torch.arange(-width, width+1, dtype=torch.float32, device=tensor.device) /
+            (SQRT_TWO_SINGLE * sigma + EPSILON_SINGLE))
+    filt = torch.exp(-filt * filt)
+    filt /= torch.sum(filt)
+    num_channels = tensor.shape[1]
+
+    tensor = F.conv2d(tensor, weight=filt.reshape((1, 1, -1, 1)).expand(num_channels, -1, -1, -1),
+                 padding=(width, 0), stride=1, groups=num_channels)
+    tensor = F.conv2d(tensor, weight=filt.reshape((1, 1, 1, -1)).expand(num_channels, -1, -1, -1),
+                 padding=(0, width), stride=1, groups=num_channels)
+
+    return tensor
+
+
+def simple_reward(result, target, variant = "preserve"):
+    assert isinstance(result, torch.Tensor)
+    assert isinstance(target, int)
+
+    if variant == "preserve":
+        reward = result[:, target]
+    elif variant == "delete":
+        reward = - result[:, target]
+    elif variant == "dual":
+        length = result.shape[0]
+        assert length % 2 == 0
+        num_areas = length / 2
+        reward = result[:num_areas, target] - result[num_areas:, target]
+    else:
+        assert False
+
+    return reward
+
+
+def contrastive_reward(result, target, variant):
+    assert isinstance(result, torch.Tensor)
+    assert isinstance(target, int)
+
+    def get(pred_y, y):
+        temp_y = pred_y.clone()
+        temp_y[:, y] = -100
+        return pred_y[:, target] - temp_y.max(dim=1, keepdim=True)[0]
+
+    if variant == "preserve":
+        reward = get(result, target)
+    elif variant == "delete":
+        reward = get(result, target)
+    elif variant == "dual":
+        length = result.shape[0]
+        assert length % 2 == 0
+        num_areas = length / 2
+        reward = get(result[:num_areas], target) - get(result[num_areas:], target)
+    else:
+        assert False
+
+    return reward
+
+
+class MaskGenerator:
+    def __init__(self, shape, step, sigma, clamp=True, pooling_method='softmax' ):
+        super(MaskGenerator, self).__init__()
+        self.shape = shape
+        self.step = step
+        self.sigma = sigma
+        self.coldness = 20
+        self.clamp = clamp
+        self.pooling_method = pooling_method
+
+        # self.margin = 0
+
+        assert isinstance(step, int)
+
+        self.kernel = lambda z: torch.exp(-2 * ((z - 0.5).clamp(min=0)**2))  # option1: Basic in the torchray code
+        # self.kernel = lambda z: (z < 1).float()  # option2: Noted in the torchray code
+        # self.kernel = lambda z: torch.exp(((z - 1.).clamp(min=0)**2)/4)  # option3: function in the extremal perturbation journal
+
+        self.margin = self.sigma
+        self.padding = 1 + ceil((self.margin + self.sigma) / self.step)
+        self.radius = 1 + ceil(self.sigma / self.step)
+
+        ##### To save changing shapes in progress #####
+        self.shape_in = [ceil(z/step) for z in self.shape]
+        self.shape_mid = [z + 2 * self.padding - (2 * self.radius + 1) + 1 for z in self.shape_in]
+        self.shape_up = [z * self.step for z in self.shape_mid]
+        self.shape_out = [z - self.step - 1 for z in self.shape_up]
+
+        self.weight = torch.zeros((1, (2 * self.radius + 1)**2, self.shape_out[0], self.shape_out[1]))
+
+        for ky in range(2 * self.radius + 1):
+            for kx in range(2 * self.radius + 1):
+                uy, ux = torch.meshgrid(torch.arange(self.shape_out[0], dtype=torch.float32),
+                                        torch.arange(self.shape_out[1], dtype=torch.float32))
+                iy, ix = torch.floor(uy/self.step) + ky - self.padding, torch.floor(ux/self.step) + kx - self.padding
+
+                delta = torch.sqrt(
+                    (uy - (self.margin + self.step * iy))**2 +
+                    (ux - (self.margin + self.step * ix))**2
+                )
+
+                k = ky * (2 * self.radius + 1) + kx
+
+                self.weight[0, k] = self.kernel(delta/self.sigma)
+                # The weights that make neighbor disks, created by upsampling, are centrally flat and then decay smoothly
+
+    def generate(self, mask_in):
+        mask = F.unfold(mask_in, (2 * self.radius + 1,) * 2, padding=(self.padding,) * 2)
+        # F.unfold input option: (input, number of blocks that unfolded, padding)
+        # F.unfold output: [mask_in.shape, number of blocks that unfolded, number of data in each unfolded blocks]
+
+        mask = mask.reshape(mask_in.shape[0], -1, self.shape_mid[0], self.shape_mid[1])
+        mask = F.interpolate(mask, size=(self.shape_up[0], self.shape_up[1]), mode='nearest')
+        mask = F.pad(mask, pad=(0, -self.step - 1, 0, -self.step - 1))
+        """ Reason of weird padding: When up-scaling, delta tensor calculated based on the distance between the 
+        before-up-scaled pixel and up-scaled pixels from the before-up-scaled pixel. In the calculation, the deltas 
+        for from step-1 to end of padding on right and bottom of the up-scaled mask can not calculated, 
+        because, in the calculation, their before-up-scaled pixels are out of range of mid-scale mask. """
+
+        mask = mask * self.weight
+
+        if self.pooling_method == 'sigmoid':
+            if self.coldness == float('+Inf'):
+                mask = (mask.sum(dim=1, keepdim=True) -5 > 0).float()
+            else:
+                mask = torch.sigmoid(self.coldness * mask.sum(dim=1, keepdim=True) - 3)
+
+        elif self.pooling_method == 'softmax':
+            if self.coldness == float('+inf'):
+                mask = mask.max(dim=1, keepdim=True)[0]
+            else:
+                mask = torch.softmax(self.coldness * mask, dim=1,).sum(dim=1, keepdim=True)
+
+        elif self.pooling_method == 'sum':
+            mask = mask.sum(dim=1, keepdim=True)
+
+        else:
+            assert False
+
+        m = round(self.margin)
+        if self.clamp:
+            mask = mask.clamp(min=0, max=1)
+
+        cropped_mask = mask[:, :, m:m + self.shape[0], m:m + self.shape[1]]
+
+        return cropped_mask, mask
+
+    def to(self, dev):
+        self.weight = self.weight.to(device=dev)
+        return self
+
+
+def extremal_perturbation(model, input, target, areas=[0.1], perturbation="blur",
+                          max_iter=1600, pyramid_levels=8, step=8, sigma=21, variant="preserve",
+                          jitter=False, reward_func=simple_reward, resize=False, resize_mode='bilinear', smooth=False):
+
+    if isinstance(areas, float):
+        areas = [areas]
+
+    learning_rate = 0.4
+    momentum = 0.9
+    regul_weight = 300
+    device = input.device
+
+    for p in model.parameters():
+        p.requires_grad_(False)
+
+    perturbation = Perturbation(input, pyramid_levels=8, type=perturbation).to(device)
+
+    shape = perturbation.pyramid.shape[2:]
+    mask_generator = MaskGenerator(shape, step, sigma).to(device)
+    h, w = mask_generator.shape_in
+    pmask = torch.ones(len(areas), 1, h, w).to(device)
+
+    max_area = np.prod(mask_generator.shape_out)
+    reference = torch.ones(len(areas), max_area).to(device)
+    for i, a in enumerate(areas):
+        reference[i, :int(max_area * (1 - a))] = 0
+
+    optimizer = optim.SGD([pmask], lr=learning_rate, momentum=momentum, dampening=momentum)
+
+    hist = torch.zeros(len(areas), 2, 0)
+
+    for t in trange(max_iter):
+        pmask.requires_grad_(True)
+        cropped_masks, margin_mask = mask_generator.generate(pmask)
+        if variant == 'preserve':
+            perturbed_images = perturbation.apply(cropped_masks)
+        elif variant == 'delete':
+            perturbed_images = perturbation.apply(1 - cropped_masks)
+        elif variant == 'dual':
+            perturbed_images = torch.cat((perturbation.apply(cropped_masks), perturbation.apply(1 - cropped_masks)), dim=0)
+        else:
+            assert False
+
+        if jitter and t % 2 == 0:
+            perturbed_images = torch.flip(perturbed_images, dims=(3,))
+
+        results = model(perturbed_images)
+
+
+        reward = reward_func(results, target, variant='preserve')
+        reward = reward.reshape(len(areas), -1).mean(dim=1)
+
+        sorted_mask = margin_mask.reshape(len(areas), -1).sort(dim=1)[0]
+        regul = - ((sorted_mask - reference)**2).mean(dim=1) * regul_weight
+        energy = (reward + regul).sum()
+
+        print(results[0][target], energy)
+
+        optimizer.zero_grad()
+        (- energy).backward()
+        optimizer.step()
+
+        pmask.data = pmask.data.clamp(min=0, max=1)
+
+        hist = torch.cat(
+            (hist, torch.cat((
+                reward.detach().cpu().view(-1, 1, 1), regul.detach().cpu().view(-1, 1, 1)),
+                dim=1)),
+            dim=2)
+
+        regul_weight *= 2.**(3./max_iter)
+
+        if resize:
+            cropped_masks = F.interpolate(cropped_masks, input.shape[2:], mode=resize_mode, align_corners=False)
+
+        if smooth:
+            cropped_masks = Gaussian_blur(cropped_masks, sigma = smooth * min(cropped_masks.shape[2:]))
+
+    return cropped_masks, perturbed_images, hist
