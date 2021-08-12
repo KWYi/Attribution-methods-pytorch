@@ -6,12 +6,16 @@ This code can be used for any custom models constructed by PyTorch and pretraine
 
 Examples: Gradcam results for a containership (left) and a steel arch bridge (right)
 <p align="left">
-<img src="https://user-images.githubusercontent.com/48608835/129144785-7b3231c1-19f7-4325-8c22-078a86dd469a.png" width="50%" height="50%"></center>
+<img src="https://user-images.githubusercontent.com/48608835/129145521-52017192-e4ab-4fda-bc7a-98098b58d3ec.png" width="50%" height="50%"></center>
 </p>
 
 <p align="right">
-<img src="https://user-images.githubusercontent.com/48608835/129145252-1b55e803-3245-4fce-be70-1a6365176862.png" width="50%" height="50%"></center>
+<img src="https://user-images.githubusercontent.com/48608835/129145468-9b5b1ee5-86a2-43c6-882c-c1a544f6a4d4.png" width="50%" height="50%"></center>
 </p>
+
+![GradCam](https://user-images.githubusercontent.com/48608835/129145521-52017192-e4ab-4fda-bc7a-98098b58d3ec.png)
+
+![GradCam](https://user-images.githubusercontent.com/48608835/129145468-9b5b1ee5-86a2-43c6-882c-c1a544f6a4d4.png)
 
 
 
