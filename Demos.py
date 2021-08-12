@@ -95,12 +95,7 @@ sys.exit()
 
 target_layers = 'layer4.2.conv3'  # The last convolution layer of the resnet152 model.
 # target_layers = 'features.norm5'  # The last convolution layer of the densenet161 model.
-# 1. Gradcam_counterfactual
+# Gradcam_counterfactual
 GC = GradCam(model)
 GC_grads = GC.get_gradient(input_TensorImage=Input_img, target_layers=target_layers, counter=True, target_label=target_label_index)
 GC_vis = GC.visualize(GC_grads, original_img, view=True, save=False)
-
-# 2. Gradcam++_counterfactual
-GCplpl = GradCamplusplus(model)
-GCplpl_grads = GCplpl.get_gradient(input_TensorImage=Input_img, target_layers=target_layers, counter=True, target_label=target_label_index)
-GCplpl_vis = GCplpl.visualize(GCplpl_grads, original_img, view=True, save=False)
