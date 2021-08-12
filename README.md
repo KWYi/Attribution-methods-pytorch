@@ -50,17 +50,22 @@ Examples (4)- Grad-CAM results from first CNN block to the last CNN block of Den
 
 <table>
   <tr>
-    <td> Label </td> <td> 1 </td> <td> 2 </td> <td> 3 </td> <td> 4 </td>
+    <td> Label </td> <td> First block </td> <td> Second block </td> <td> Third block </td> <td> Last block </td>
   </tr>
   
   <tr>
-    <td> Indio bird</td>
+    <td> Indigo bird</td>
     <td> <img src="https://user-images.githubusercontent.com/48608835/129155097-db7bbb3b-b06f-49b1-a78c-6050f0b74ad2.png" width=250px></td>
     <td> <img src="https://user-images.githubusercontent.com/48608835/129155102-3eba316c-8213-42fb-8306-45fc27decca4.png" width=250px></td>
     <td> <img src="https://user-images.githubusercontent.com/48608835/129155115-3a6066ff-8a49-43e6-8e7c-4ece96c3a8d4.png" width=250px></td>
     <td> <img src="https://user-images.githubusercontent.com/48608835/129155457-75b028d9-1968-4595-962c-0a29bcbb2cde.png" width=250px></td>
   </tr>
+  
+  <tr>
+    <td> Birdhouse</td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155794-b948c725-4b5e-47af-bff1-145dd5724e59.png" width=250px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155807-62462f25-a193-45d8-aaeb-882ff2c187dd.png" width=250px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155817-e98de4a2-c6a6-4709-807a-4774299805c4.png" width=250px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155818-f4b4564a-74ca-4e0b-9f0d-8f47234184f3.png" width=250px></td>
+  </tr>
 </table>
-
-
-
