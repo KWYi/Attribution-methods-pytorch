@@ -16,3 +16,17 @@ Examples (1)- Gradcam results
     <td> <img src="https://user-images.githubusercontent.com/48608835/129150049-ddc9047f-d9c4-489b-b900-d7cabaa93d94.png" width=360px></td>
   </tr>
 </table>
+
+Examples (2)- Guided backpropagation results
+
+<table>
+  <tr>
+    <td> Image </td> <td> Bull mastiff label </td> <td> Tigercat label </td>
+  </tr>
+  
+  <tr>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129151171-3c45243a-96aa-4010-8eb2-2f04dd8ef198.jpg" width=360px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129151209-45d31871-050c-4fde-b269-8bacb0ed87a2.png" width=360px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129151246-2a6172b7-e258-4a44-a386-076e0d3d352a.png" width=360px></td>
+  </tr>
+</table>
