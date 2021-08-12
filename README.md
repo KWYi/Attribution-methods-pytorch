@@ -30,3 +30,17 @@ Examples (2)- Guided backpropagation results
     <td> <img src="https://user-images.githubusercontent.com/48608835/129151246-2a6172b7-e258-4a44-a386-076e0d3d352a.png" width=360px></td>
   </tr>
 </table>
+
+Examples (3)- Guided gradcam results
+
+<table>
+  <tr>
+    <td> Image </td> <td> Sea lion label </td> <td> Penguin label </td>
+  </tr>
+  
+  <tr>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129152303-b8e3ed68-a5f7-4642-8a14-7cb4ec36148f.jpg" width=360px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129152312-38ba2387-fa55-4aa0-baab-91f793878c39.png" width=360px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129152319-a7748f5c-7de7-4dad-a5b1-05c66fadfe0f.png" width=360px></td>
+  </tr>
+</table>
