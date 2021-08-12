@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import PIL
 from PIL import Image
 from collections.abc import Iterable
-import pickle
 
 def Nancheck(x):
     if (x != x).any():
@@ -229,39 +228,20 @@ class _Base:
                 if save_locations:
                     if save_names:
                         if len(save_locations) == 1:
-                            fig.savefig(save_locations[0] + '\\' + save_names[idx] + '.eps', bbox_inches='tight',
-                                        pad_inches=0)
                             fig.savefig(save_locations[0] + '\\' + save_names[idx] + '.png', bbox_inches='tight',
                                         pad_inches=0)
-                            with open(save_locations[0] + '\\' + save_names[idx] + '.pickle', 'wb') as f:
-                                pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
                         else:
-                            fig.savefig(save_locations[idx] + '\\' + save_names[idx] + '.eps', bbox_inches='tight',
-                                        pad_inches=0)
                             fig.savefig(save_locations[idx] + '\\' + save_names[idx] + '.png', bbox_inches='tight',
                                         pad_inches=0)
-                            with open(save_locations[idx] + '\\' + save_names[idx] + '.pickle', 'wb') as f:
-                                pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
                     else:
                         if len(save_locations) == 1:
-                            fig.savefig(save_locations[0] + '\\' + self.basic_names[idx] + '.eps', bbox_inches='tight',
-                                        pad_inches=0)
                             fig.savefig(save_locations[0] + '\\' + self.basic_names[idx] + '.png', bbox_inches='tight',
                                         pad_inches=0)
-                            with open(save_locations[0] + '\\' + self.basic_names[idx] + '.pickle', 'wb') as f:
-                                pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
                         else:
-                            fig.savefig(save_locations[idx] + '\\' + self.basic_names[idx] + '.eps',
-                                        bbox_inches='tight', pad_inches=0)
                             fig.savefig(save_locations[idx] + '\\' + self.basic_names[idx] + '.png',
                                         bbox_inches='tight', pad_inches=0)
-                            with open(save_locations[idx] + '\\' + self.basic_names[idx] + '.pickle', 'wb') as f:
-                                pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
                 else:
-                    fig.savefig(self.basic_names[idx] + '.eps', bbox_inches='tight', pad_inches=0)
                     fig.savefig(self.basic_names[idx] + '.png', bbox_inches='tight', pad_inches=0)
-                    with open(self.basic_names[idx] + '.pickle', 'wb') as f:
-                        pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
             plt.close()
         return gradmaps
 
@@ -454,37 +434,19 @@ class Guided_BackPropagation(_Base):
             if save_locations:
                 if save_names:
                     if len(save_locations) == 1:
-                        fig.savefig(save_locations[0] + '\\' + save_names[0] + '.eps', bbox_inches='tight',
-                                    pad_inches=0)
                         fig.savefig(save_locations[0] + '\\' + save_names[0] + '.png', bbox_inches='tight',
                                     pad_inches=0)
-                        with open(save_locations[0] + '\\' + save_names[0] + '.pickle', 'wb') as f:
-                            pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
                     else:
-                        fig.savefig(save_locations[0] + '\\' + save_names[0] + '.eps', bbox_inches='tight',
-                                    pad_inches=0)
                         fig.savefig(save_locations[0] + '\\' + save_names[0] + '.png', bbox_inches='tight',
                                     pad_inches=0)
-                        with open(save_locations[0] + '\\' + save_names[0] + '.pickle', 'wb') as f:
-                            pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
                 else:
                     if len(save_locations) == 1:
-                        fig.savefig(save_locations[0] + '\\' + self.basic_names[0] + '.eps', bbox_inches='tight',
-                                    pad_inches=0)
                         fig.savefig(save_locations[0] + '\\' + self.basic_names[0] + '.png', bbox_inches='tight',
                                     pad_inches=0)
-                        with open(save_locations[0] + '\\' + self.basic_names[0] + '.pickle', 'wb') as f:
-                            pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
-
                     else:
-                        fig.savefig(save_locations[0] + '\\' + self.basic_names[0] + '.eps', bbox_inches='tight',
-                                    pad_inches=0)
                         fig.savefig(save_locations[0] + '\\' + self.basic_names[0] + '.png', bbox_inches='tight',
                                     pad_inches=0)
-                        with open(save_locations[0] + '\\' + self.basic_names[0] + '.pickle', 'wb') as f:
-                            pickle.dump(gradient, f, pickle.HIGHEST_PROTOCOL)
             else:
-                fig.savefig(self.basic_names[0] + '.eps', bbox_inches='tight', pad_inches=0)
                 fig.savefig(self.basic_names[0] + '.png', bbox_inches='tight', pad_inches=0)
         plt.close()
 
