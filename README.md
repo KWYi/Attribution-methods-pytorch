@@ -50,13 +50,15 @@ Examples (4)- Grad-CAM results from first CNN block to the last CNN block of Den
 
 <table>
   <tr>
-    <td> CNN block </td> <td> indigo bird label </td> <td> Bird house label </td>
+    <td> Label </td> <td> 1 </td> <td> 2 </td> <td> 3 </td> <td> 4 </td>
   </tr>
   
   <tr>
-    <td> 1 </td>
-    <td> <img src="https://user-images.githubusercontent.com/48608835/129154825-6949175e-2583-4719-833e-a16a0a76564a.png" width=360px></td>
-    <td> <img src="https://user-images.githubusercontent.com/48608835/129154879-726450f1-da78-4326-9b82-76db6eaef18a.png" width=360px></td>
+    <td> Indio bird</td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155097-db7bbb3b-b06f-49b1-a78c-6050f0b74ad2.png" width=250px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155102-3eba316c-8213-42fb-8306-45fc27decca4.png" width=250px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155115-3a6066ff-8a49-43e6-8e7c-4ece96c3a8d4.png" width=250px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129155457-75b028d9-1968-4595-962c-0a29bcbb2cde.png" width=250px></td>
   </tr>
 </table>
 
