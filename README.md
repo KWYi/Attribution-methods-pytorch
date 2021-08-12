@@ -3,7 +3,7 @@ Codes of GradCam, GradCam++, Guided Back Propagation, Guided GradCam and Guided 
 
 These codes can be used for any custom models constructed by pyTorch and pretrained models provided from torchvision.
 
-Examples (1)- Gradcam results
+Examples (1)- Grad-CAM results
 
 <table>
   <tr>
@@ -31,7 +31,7 @@ Examples (2)- Guided backpropagation results
   </tr>
 </table>
 
-Examples (3)- Guided gradcam results
+Examples (3)- Guided Grad-CAM results
 
 <table>
   <tr>
@@ -44,3 +44,21 @@ Examples (3)- Guided gradcam results
     <td> <img src="https://user-images.githubusercontent.com/48608835/129152319-a7748f5c-7de7-4dad-a5b1-05c66fadfe0f.png" width=360px></td>
   </tr>
 </table>
+
+
+Examples (4)- Grad-CAM results from first CNN block to the last CNN block of DenseNet161 model.
+
+<table>
+  <tr>
+    <td> CNN block </td> <td> indigo bird label </td> <td> Bird house label </td>
+  </tr>
+  
+  <tr>
+    <td> 1 </td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129154825-6949175e-2583-4719-833e-a16a0a76564a.png" width=360px></td>
+    <td> <img src="https://user-images.githubusercontent.com/48608835/129154879-726450f1-da78-4326-9b82-76db6eaef18a.png" width=360px></td>
+  </tr>
+</table>
+
+
+
