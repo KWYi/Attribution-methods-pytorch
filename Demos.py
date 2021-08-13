@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from Transformer import CustomImage
 from Visual_explanations import GradCam, GradCamplusplus, Guided_BackPropagation, Guided_GradCam
-from Extremal_Perturbation import extremal_perturbation
 
 model = torchvision.models.resnet152(pretrained=True)
 # model = torchvision.models.densenet161(pretrained=True)
