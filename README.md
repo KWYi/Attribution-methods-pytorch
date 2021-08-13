@@ -1,7 +1,7 @@
 # Visual-explanation-pytorch
 Codes of GradCam, GradCam++, Guided Back Propagation, Guided GradCam and Guided GradCam++ via pytorch.
 
-These codes can be used for any custom models constructed by pyTorch and pretrained models provided from torchvision.
+These codes can be used for any custom models constructed by pytorch and pretrained models provided from torchvision.
 
 Examples (1)- Grad-CAM results
 
