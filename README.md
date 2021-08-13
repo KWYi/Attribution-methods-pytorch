@@ -46,7 +46,7 @@ Examples (3)- Guided Grad-CAM results
 </table>
 
 
-Examples (4)- Grad-CAM results from first CNN block to the last CNN block of DenseNet161 model.
+Examples (4)- Grad-CAM results from the first CNN block to the last CNN block of the DenseNet161 model.
 
 <table>
   <tr>
