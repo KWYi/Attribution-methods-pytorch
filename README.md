@@ -7,6 +7,9 @@ Examples (1)- Grad-CAM results
 
 <table>
   <tr>
+    <td> Examples (1)- Grad-CAM results </td>
+  </tr>
+  <tr>
     <td> Image </td> <td> Container ship label </td> <td> Steel arch bridge label </td>
   </tr>
   
@@ -20,6 +23,9 @@ Examples (1)- Grad-CAM results
 Examples (2)- Guided backpropagation results
 
 <table>
+  <tr>
+    <td> Examples (2)- Guided backpropagation results </td>
+  </tr>
   <tr>
     <td> Image </td> <td> Bull mastiff label </td> <td> Tigercat label </td>
   </tr>
@@ -35,6 +41,9 @@ Examples (3)- Guided Grad-CAM results
 
 <table>
   <tr>
+    <td> Examples (3)- Guided Grad-CAM results </td>
+  </tr>
+  <tr>
     <td> Image </td> <td> Sea lion label </td> <td> Penguin label </td>
   </tr>
   
@@ -49,6 +58,9 @@ Examples (3)- Guided Grad-CAM results
 Examples (4)- Grad-CAM results from the first CNN block to the last CNN block of the DenseNet161 model.
 
 <table>
+  <tr>
+    <td> Examples (4)- Grad-CAM results from the first CNN block to the last CNN block of the DenseNet161 model </td>
+  </tr>
   <tr>
     <td> Label </td> <td> First block </td> <td> Second block </td> <td> Third block </td> <td> Last block </td>
   </tr>
