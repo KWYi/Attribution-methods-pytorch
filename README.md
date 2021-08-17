@@ -7,7 +7,7 @@ Examples (1)- Grad-CAM results
 
 <table>
   <tr>
-    <td> Examples (1)- Grad-CAM results </td>
+    Examples (1)- Grad-CAM results
   </tr>
   <tr>
     <td> Image </td> <td> Container ship label </td> <td> Steel arch bridge label </td>
