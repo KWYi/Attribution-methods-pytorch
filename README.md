@@ -1,10 +1,9 @@
 # Visual-explanation-pytorch
 
-This is a PyTorch implementation of attribution methods.
+This is a PyTorch implementation of attribution methods, GradCam, GradCam++, Guided Back Propagation, Guided GradCam and Guided GradCam++.
+
 
 These codes have been used for the paper "Visual Explanation of a Deep Learning Solar Flare Forecast Model and Its Relationship to Physical Parameters" (https://doi.org/10.3847/1538-4357/abdebe).
-
-Codes of GradCam, GradCam++, Guided Back Propagation, Guided GradCam and Guided GradCam++ via pytorch.
 
 These codes can be used for any custom models constructed by pytorch and pretrained models provided from torchvision.
 
