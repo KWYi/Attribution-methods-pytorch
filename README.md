@@ -1,4 +1,4 @@
-# Visual-explanation-pytorch
+# Attribution methods - pytorch
 
 This is a PyTorch implementation of attribution methods, Grad-Cam, Grad-Cam++, Guided Back Propagation, Guided Grad-Cam and Guided Grad-Cam++.
 
